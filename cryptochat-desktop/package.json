@@ -1,0 +1,36 @@
+{
+  "name": "cryptochat",
+  "version": "1.0.0",
+  "description": "Chat cifrado de ponta a ponta",
+  "main": "main.js",
+  "author": "Você",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build-portable": "electron-builder --win portable --x64",
+    "build-all": "electron-builder --win nsis portable --x64"
+  },
+  "build": {
+    "appId": "com.cryptochat.desktop",
+    "productName": "CryptoChat",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "index.html", "css/**/*", "js/**/*"],
+    "win": {
+      "target": ["nsis", "portable"],
+      "artifactName": "CryptoChat-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CryptoChat"
+    }
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}
