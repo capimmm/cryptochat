@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>CryptoChat</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="orb orb-a"></div>
+<div class="orb orb-b"></div>
+<div class="orb orb-c"></div>
+<div class="grain"></div>
+
+<!-- ==================== HOME ==================== -->
+<section id="screen-home" class="screen active">
+  <div class="home">
+    <header class="home-head">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="16" height="11" rx="2.5"/>
+          <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+          <circle cx="12" cy="15.5" r="1.3" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <h1>CryptoChat</h1>
+      <p class="home-sub">Mensagens cifradas de ponta a ponta</p>
+    </header>
+
+    <div class="cards">
+      <button class="card" data-nav="normal">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a8 8 0 0 1-12 6.9L4 20l1.1-4A8 8 0 1 1 21 12z"/>
+            <path d="M8.5 11h7M8.5 14h4"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h2>Normal</h2>
+          <p>Conversas salvas neste dispositivo</p>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+      </button>
+
+      <button class="card" data-nav="private">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="10" r="5.5"/>
+            <path d="M8.5 14.5 7 21l5-2.2L17 21l-1.5-6.5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <h2>Privado</h2>
+          <p>Sala efêmera com chamadas e QR Code</p>
+        </div>
+        <div class="card-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+      </button>
+    </div>
+
+    <p class="home-foot">AES-256-GCM · WebRTC P2P</p>
+  </div>
+</section>
+
+<!-- ==================== NORMAL ==================== -->
+<section id="screen-normal" class="screen">
+  <header class="bar">
+    <button class="icon-btn" data-back>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="bar-title">Normal</div>
+    <div class="status-dot" id="norm-status"></div>
+  </header>
+
+  <div class="id-strip">
+    <div class="id-block">
+      <span class="id-label">SEU CÓDIGO</span>
+      <div class="id-row">
+        <span class="id-code" id="norm-id">····</span>
+        <button class="mini-btn" id="norm-copy" title="Copiar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="11" height="11" rx="2"/>
+            <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <button class="add-btn" id="norm-add">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      <span>Adicionar</span>
+    </button>
+  </div>
+
+  <div class="contacts" id="norm-contacts"></div>
+  <div class="chat-area" id="norm-chat"></div>
+
+  <div class="composer" id="norm-composer">
+    <input type="text" id="norm-input" placeholder="Escreva uma mensagem..." autocomplete="off">
+    <button class="send-btn" id="norm-send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-8-6 8 6 8z"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ==================== PRIVADO ==================== -->
+<section id="screen-private" class="screen">
+  <header class="bar">
+    <button class="icon-btn" data-back>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="bar-title">Privado</div>
+
+    <button class="icon-btn hidden" id="priv-call-audio" title="Chamada de voz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/>
+      </svg>
+    </button>
+
+    <button class="icon-btn hidden" id="priv-call-video" title="Chamada de vídeo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="14" height="12" rx="2"/>
+        <path d="M22 8.5v7l-6-3.5z"/>
+      </svg>
+    </button>
+
+    <button class="icon-btn hidden" id="priv-call-screen" title="Compartilhar tela">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="13" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+      </svg>
+    </button>
+
+    <div class="status-dot" id="priv-status"></div>
+  </header>
+
+  <div class="private-stage">
+    <div class="private-connect" id="priv-connect">
+      <div class="pc-hero">
+        <div class="pc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="10" r="5.5"/>
+            <path d="M8.5 14.5 7 21l5-2.2L17 21l-1.5-6.5"/>
+          </svg>
+        </div>
+        <h2>Sala efêmera</h2>
+        <p>Compartilhe o código ou o QR para alguém entrar</p>
+      </div>
+
+      <div class="pc-box">
+        <span class="id-label">SEU CÓDIGO</span>
+        <div class="id-row center">
+          <span class="id-code big" id="priv-code">····-····</span>
+        </div>
+        <div class="pc-actions">
+          <button class="mini-action" id="priv-qr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01"/>
+            </svg>
+            <span>QR Code</span>
+          </button>
+          <button class="mini-action" id="priv-copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="11" height="11" rx="2"/>
+              <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+            </svg>
+            <span>Copiar</span>
+          </button>
+          <button class="mini-action" id="priv-share">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"/>
+              <circle cx="6" cy="12" r="3"/>
+              <circle cx="18" cy="19" r="3"/>
+              <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>
+            </svg>
+            <span>Compartilhar</span>
+          </button>
+        </div>
+        <p class="id-hint" id="priv-hint">Aguardando alguém conectar…</p>
+      </div>
+
+      <div class="pc-divider"><span>ou</span></div>
+
+      <div class="pc-join">
+        <label class="id-label" for="priv-input">CONECTAR COM CÓDIGO</label>
+        <div class="join-row">
+          <input type="text" id="priv-input" placeholder="XXXX-XXXX" maxlength="12" autocomplete="off" spellcheck="false">
+          <button class="ghost-btn" id="priv-join">Conectar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="private-chat hidden" id="priv-chat">
+      <div class="chat-area" id="priv-messages"></div>
+    </div>
+  </div>
+
+  <div class="composer hidden" id="priv-composer">
+    <button class="media-btn" id="priv-img" title="Enviar imagem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2.5"/>
+        <circle cx="9" cy="10" r="1.6"/>
+        <path d="M4 18l5-5 4 4 3-3 4 4"/>
+      </svg>
+    </button>
+    <input type="text" id="priv-input-msg" placeholder="Mensagem efêmera..." autocomplete="off">
+    <button class="media-btn" id="priv-voice" title="Gravar voz">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="3" width="6" height="12" rx="3"/>
+        <path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>
+      </svg>
+    </button>
+    <button class="send-btn" id="priv-send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l16-8-6 8 6 8z"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ==================== MODAL: ADICIONAR ==================== -->
+<div class="modal-back" id="modal-back">
+  <div class="modal">
+    <h3>Adicionar contato</h3>
+    <p>Digite o código da pessoa para iniciar uma conversa.</p>
+    <input type="text" id="modal-input" placeholder="XXXX-XXXX" maxlength="12" autocomplete="off" spellcheck="false">
+    <div class="modal-actions">
+      <button class="ghost-btn" id="modal-cancel">Cancelar</button>
+      <button class="primary-btn" id="modal-confirm">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MODAL: QR ==================== -->
+<div class="modal-back" id="qr-back">
+  <div class="modal qr-modal">
+    <h3>Entrar na sala</h3>
+    <p>Escaneie o QR Code ou compartilhe o link.</p>
+    <div class="qr-wrap" id="qr-wrap"></div>
+    <div class="qr-code-label" id="qr-code-label">····-····</div>
+    <div class="modal-actions">
+      <button class="ghost-btn" id="qr-copy-link">Copiar link</button>
+      <button class="primary-btn" id="qr-close">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== OVERLAY: CHAMADA ==================== -->
+<div class="call-overlay" id="call-overlay">
+  <div class="call-stage">
+    <video id="call-remote-video" autoplay playsinline></video>
+    <audio id="call-remote-audio" autoplay></audio>
+    <div class="call-placeholder" id="call-placeholder">
+      <div class="call-avatar" id="call-avatar">··</div>
+      <div class="call-name" id="call-name">Parceiro</div>
+    </div>
+  </div>
+
+  <div class="call-local" id="call-local">
+    <video id="call-local-video" autoplay playsinline muted></video>
+  </div>
+
+  <div class="call-info">
+    <div class="call-status" id="call-status">Conectando…</div>
+    <div class="call-duration" id="call-duration">00:00</div>
+  </div>
+
+  <div class="call-controls">
+    <button class="call-btn" id="call-mute" title="Mudo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="3" width="6" height="12" rx="3"/>
+        <path d="M5 11a7 7 0 0 0 12 4.9M12 18v3"/>
+      </svg>
+    </button>
+    <button class="call-btn" id="call-video-toggle" title="Câmera">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="14" height="12" rx="2"/>
+        <path d="M22 8.5v7l-6-3.5z"/>
+      </svg>
+    </button>
+    <button class="call-btn danger" id="call-end" title="Encerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 10c6-4 12-4 18 0v4l-5 1-2-3-4 0-2 3-5-1z"/>
+      </svg>
+    </button>
+    <button class="call-btn" id="call-screen-toggle" title="Tela">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="13" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <img id="lightbox-img" alt="">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<input type="file" id="priv-file" accept="image/*" hidden>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="js/crypto.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/peers.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
