@@ -1,4 +1,4 @@
-/* CryptoChat — persistência: Normal em localStorage, Privado em sessionStorage */
+/* CryptoChat — persistência */
 (function (global) {
   'use strict';
 
@@ -12,18 +12,11 @@
     return s;
   }
 
-  function safeGet(store, key, fb) {
-    try { const v = store.getItem(key); return v == null ? fb : JSON.parse(v); }
-    catch (e) { return fb; }
-  }
-  function safeSet(store, key, val) {
-    try { store.setItem(key, JSON.stringify(val)); } catch (e) {}
-  }
-  function safeDel(store, key) {
-    try { store.removeItem(key); } catch (e) {}
-  }
+  const safeGet = (st, k, fb) => { try { const v = st.getItem(k); return v == null ? fb : JSON.parse(v); } catch (e) { return fb; } };
+  const safeSet = (st, k, v) => { try { st.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const safeDel = (st, k) => { try { st.removeItem(k); } catch (e) {} };
 
-  const Store = {
+  global.Store = {
     generateCode,
 
     getIdentity() {
@@ -42,18 +35,16 @@
       if (!c) { c = generateCode(); sessionStorage.setItem('cc:priv:code', c); }
       return c;
     },
-    resetPrivateCode() {
-      const c = generateCode();
-      sessionStorage.setItem('cc:priv:code', c);
-      return c;
-    },
     getPrivateMessages()    { return safeGet(sessionStorage, 'cc:priv:msgs', []); },
-    savePrivateMessages(m)  { safeSet(sessionStorage, 'cc:priv:msgs', m.slice(-200)); },
+    // só salva texto — mídias ficam só em memória (evita estourar a cota)
+    savePrivateMessages(m)  {
+      const light = m.filter(x => x.type === 'text' || x.sys)
+                     .map(x => ({ id:x.id, ts:x.ts, mine:x.mine, sys:x.sys, text:x.text }));
+      safeSet(sessionStorage, 'cc:priv:msgs', light.slice(-200));
+    },
     clearPrivate() {
       safeDel(sessionStorage, 'cc:priv:code');
       safeDel(sessionStorage, 'cc:priv:msgs');
     }
   };
-
-  global.Store = Store;
 })(window);
