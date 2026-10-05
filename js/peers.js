@@ -1,12 +1,10 @@
-/* CryptoChat — wrapper PeerJS (WebRTC P2P) */
+/* CryptoChat — PeerJS wrapper */
 (function (global) {
   'use strict';
-
-  const PREFIX = 'ccx-v2-';
+  const PREFIX = 'ccx-v3-';
 
   function makeId(kind, code) {
-    const safe = String(code).replace(/[^A-Za-z0-9]/g, '');
-    return PREFIX + kind + '-' + safe;
+    return PREFIX + kind + '-' + String(code).replace(/[^A-Za-z0-9]/g, '');
   }
 
   function create(kind, code) {
@@ -15,16 +13,10 @@
       let opened = false;
       const timer = setTimeout(() => {
         if (!opened) { try { peer.destroy(); } catch (e) {} reject(new Error('timeout')); }
-      }, 12000);
+      }, 14000);
 
-      peer.on('open', () => {
-        opened = true;
-        clearTimeout(timer);
-        resolve(peer);
-      });
-      peer.on('error', err => {
-        if (!opened) { clearTimeout(timer); reject(err); }
-      });
+      peer.on('open', () => { opened = true; clearTimeout(timer); resolve(peer); });
+      peer.on('error', err => { if (!opened) { clearTimeout(timer); reject(err); } });
     });
   }
 
