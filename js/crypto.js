@@ -45,10 +45,9 @@
     return JSON.parse(TD.decode(pt));
   }
 
-  // segredo compartilhado determinístico entre dois IDs
   function pairSecret(a, b) {
     return [a, b].sort().join('::');
   }
 
-  global.CryptoChat = { deriveKey, encrypt, decrypt, pairSecret };
+  global.CryptoChat = { deriveKey, encrypt, decrypt, pairSecret, toB64, fromB64 };
 })(window);
